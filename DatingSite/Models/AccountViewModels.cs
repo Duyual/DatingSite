@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DatingSite.Models
@@ -79,6 +80,29 @@ namespace DatingSite.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public DateTime BirthDate { get; set; }
+        public string Description { get; set; }
+        [Required]
+        public string Gender { get; set; }
+        [Required]
+        public string City { get; set; }
+        public string Profile { get; set; }
+        [Required]
+        public string FirstName { get; set; }
+        [Required]
+        public string LastName { get; set; }
+    }
+
+    public class ProfileViewModel
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public DateTime BirthDate { get; set; }
+        public string Description { get; set; }
+        public string Gender { get; set; }
+        public string City { get; set; }
+        public string Profile { get; set; }
     }
 
     public class ResetPasswordViewModel

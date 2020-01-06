@@ -62,6 +62,24 @@ namespace DatingSite.Controllers
         }
 
         //
+        // GET: /Account/Personal
+        public ActionResult Personal(string id)
+        {
+            var user = UserManager.FindById(id);
+            if (user == null)
+                user = UserManager.FindById(User.Identity.GetUserId());
+            ProfileViewModel model = new ProfileViewModel();
+            model.Description = user.Description;
+            model.City = user.City;
+            model.FirstName = user.FirstName;
+            model.LastName = user.LastName;
+            model.BirthDate = user.BirthDate;
+            model.Gender = user.Gender;
+            model.Profile = user.Profile;
+            return View(model);
+        }
+
+        //
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
@@ -151,7 +169,8 @@ namespace DatingSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, BirthDate = model.BirthDate,
+                    Description = model.Description, City = model.City, Gender = model.Gender, FirstName = model.FirstName, LastName = model.LastName };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
