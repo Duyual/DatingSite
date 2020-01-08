@@ -50,7 +50,8 @@
     <div class="form-group">
         @Html.LabelFor(m => m.Gender, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Gender, new { @class = "form-control" })
+            @Html.DropDownListFor(m => m.Gender, new List<SelectListItem> { new SelectListItem { Text = "Man" }, new SelectListItem { Text = "Kvinna" } }, new { @class = "form-control" })
+            
         </div>
     </div>
     <div class="form-group">
@@ -67,7 +68,7 @@
     </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
+            <input type="submit" class="btn btn-outline-primary" value="Register" />
         </div>
     </div>
 }

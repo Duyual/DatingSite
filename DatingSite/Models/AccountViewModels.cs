@@ -80,7 +80,7 @@ namespace DatingSite.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-
+        [Display(Name = "Birth Date")]
         public DateTime BirthDate { get; set; }
         public string Description { get; set; }
         [Required]
@@ -89,8 +89,10 @@ namespace DatingSite.Models
         public string City { get; set; }
         public string Profile { get; set; }
         [Required]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
         [Required]
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
     }
 
