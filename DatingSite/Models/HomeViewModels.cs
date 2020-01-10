@@ -8,6 +8,7 @@ namespace DatingSite.Models
     public class HomeViewModel
     {
         public List<ApplicationUser> users;
+        public List<bool> isFriends;
         public List<string> filePath;
     }
 

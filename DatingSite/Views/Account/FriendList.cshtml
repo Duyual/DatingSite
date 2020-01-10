@@ -1,4 +1,4 @@
-﻿@model DatingSite.Models.FriendListModel
+﻿@model DatingSite.Models.FriendViewModel
 
 <div class="container">
 
@@ -36,8 +36,8 @@
                     <div class="card" style="width: 18rem;">
                         <div class="card-body">
                             <h5 class="card-title">@Model.friendsReceived.ElementAt(i).FirstName @Model.friendsReceived.ElementAt(i).LastName</h5>
-                            <button class="btn btn-success">Accept</button>
-                            <button class="btn btn-danger">Decline</button>
+                            @Html.ActionLink("Accept", "AcceptFriend", "Home", new { id = Model.friendsReceived.ElementAt(i).Id }, new { @class = "btn btn-success" })
+                            @Html.ActionLink("Decline", "DeclineFriend", "Home", new { id = Model.friendsReceived.ElementAt(i).Id }, new { @class = "btn btn-danger" })
                         </div>
                     </div>
                 </div>

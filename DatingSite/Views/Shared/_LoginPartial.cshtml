@@ -12,6 +12,9 @@
         <li>
             @Html.ActionLink("Profile", "Personal", "Account", routeValues: null, htmlAttributes: new { title = "Profile", @class = "navbar-brand", area = "" })
         </li>
+        <li>
+            @Html.ActionLink("Edit", "Edit", "Account", routeValues: null, htmlAttributes: new { title = "Edit", @class = "navbar-brand", area = "" })
+        </li>
         <li><a class="navbar-brand" href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
     </ul>
     }

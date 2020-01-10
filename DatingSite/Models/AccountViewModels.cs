@@ -97,11 +97,12 @@ namespace DatingSite.Models
         public string LastName { get; set; }
     }
 
-    public class FriendListModel
+    public class FriendViewModel
     {
         public List<ApplicationUser> friends;
         public List<FriendRequests> friendRequestsSent;
         public List<FriendRequests> friendRequestsReceived;
+
         public List<ApplicationUser> friendsSent;
         public List<ApplicationUser> friendsReceived;
     }
@@ -141,6 +142,7 @@ namespace DatingSite.Models
 
     public class ProfileViewModel
     {
+        public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime BirthDate { get; set; }
@@ -149,6 +151,10 @@ namespace DatingSite.Models
         public string City { get; set; }
         public string Profile { get; set; }
         public string PicturePath { get; set; }
+        public bool isFriend { get; set; }
+        public string Comment { get; set; }
+        public List<Posts> Posts { get; set; }
+        public List<ApplicationUser> UsersPosted { get; set; }
     }
 
     public class ResetPasswordViewModel

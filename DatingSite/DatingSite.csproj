@@ -408,6 +408,10 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Account\FriendList.cshtml" />
+    <Content Include="Views\Account\AddFriend.cshtml" />
+    <Content Include="Views\Home\AddFriend.cshtml" />
+    <Content Include="Views\Home\AcceptFriend.cshtml" />
+    <Content Include="Views\Home\DeclineFriend.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

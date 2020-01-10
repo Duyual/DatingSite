@@ -42,6 +42,14 @@ namespace DatingSite.Controllers
                     //Method 2 Get file details from HttpPostedFileBase class
                     if (file != null)
                     {
+                        var existingFile = Directory.GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UploadedFiles")).Where(f => f.Contains(User.Identity.GetUserId()));
+                        if (existingFile.Count() > 0)
+                        {
+                            foreach (var existing in existingFile)
+                            {
+                                System.IO.File.Delete(existing);
+                            }
+                        }
                         //string path = Path.Combine(Server.MapPath("~/UploadedFiles"), Path.GetFileName(file.FileName));
                         string path = Path.Combine(Server.MapPath("~/UploadedFiles"), UserManager.FindById(User.Identity.GetUserId()).Id += Path.GetExtension(file.FileName));
                         file.SaveAs(path);
@@ -53,7 +61,7 @@ namespace DatingSite.Controllers
                     ViewBag.FileStatus = "Error while file uploading."; ;
                 }
             }
-            return View("Index");
+            return RedirectToAction("Edit", "Account");
         }
     }
 }

@@ -6,23 +6,49 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row">
-    <div class="col-md-3 card bg-light">
-        <div class="card-body">
-            <img class="card-img-top" src="~/UploadedFiles/@Model.PicturePath"/>
-            <h4 class="card-title">@Model.FirstName @Model.LastName</h4>
-            <h4 class="card-title">Om mig</h4>
-            <p class="card-text">@Model.Description</p>
-            <h4 class="card-title">Stad</h4>
-            <p class="card-text">@Model.City</p>
-        </div>
-    </div>
-    <div class="col-md-9">
-        <div class="row card bg-light">
+    <div class="row">
+        <div class="col-md-3 card bg-light">
             <div class="card-body">
-                <h4 class="card-title">Förnamn Efternamn</h4>
-                <p class="card-text">DET HÄR ÄR EN KOMMENTAR XD DET SKA DYKA UPP JAAAAAAAA VÄLDIGT BRAAAAAAAAAAAAA</p> 
+                <img class="card-img-top" src="~/UploadedFiles/@Model.PicturePath" />
+                <h4 class="card-title">@Model.FirstName @Model.LastName</h4>
+                <h4 class="card-title">Om mig</h4>
+                <p class="card-text">@Model.Description</p>
+                <h4 class="card-title">Stad</h4>
+                <p class="card-text">@Model.City</p>
+                @if (!Model.isFriend)
+                {
+                    //@Ajax.ActionLink("Add", "AddFriend", "Account", new { Id = Model.Id }, new AjaxOptions { HttpMethod = "POST" })
+                    @Html.ActionLink("Add", "AddFriend", "Account", new { id = Model.Id }, new { @class = "btn btn-success" })
+                    /*using (Html.BeginForm("AddFriend", "Account", FormMethod.Post))
+                    {
+                        <input class="btn btn-success" type="submit" name="add" value="Add" />
+                    }*/
+                }
             </div>
         </div>
+        <div class="col-md-9">
+        @for (int i = 0; i < Model.Posts.Count; i++)
+        {
+                <div class="row card bg-light">
+                    <div class="card-body">
+                        <h4 class="card-title">@Model.UsersPosted.ElementAt(i).FirstName @Model.UsersPosted.ElementAt(i).LastName</h4>
+                        <p class="card-text">@Model.Posts.ElementAt(i).Comment</p>
+                    </div>
+                </div>
+        }
+        </div>
+        @using (Html.BeginForm("AddComment", "Account", new { profileId = Model.Id }, FormMethod.Post, new { @class = "form-horizontal col-md-12", role = "form" }))
+        {
+            <div class="form-group">
+                @Html.LabelFor(m => m.Comment, new { @class = "col-md-12 control-label" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(m => m.Comment, new { @class = "form-control col-md-12" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-9">
+                    <input type="submit" class="btn btn-outline-primary" value="Add Comment" />
+                </div>
+            </div>
+        }
     </div>
-</div>

@@ -46,10 +46,11 @@ namespace DatingSite.Controllers
 
         public ActionResult FriendList()
         {
-            FriendListModel model = new FriendListModel();
+            FriendViewModel model = new FriendViewModel();
             List<ApplicationUser> friends = new List<ApplicationUser>();
             List<FriendRequests> requestsSent = new List<FriendRequests>();
             List<FriendRequests> requestsReceived = new List<FriendRequests>();
+
             List<ApplicationUser> friendsSent = new List<ApplicationUser>();
             List<ApplicationUser> friendsReceived = new List<ApplicationUser>();
 
@@ -80,8 +81,12 @@ namespace DatingSite.Controllers
 
             foreach (var request in friendRequestsSent)
             {
-                requestsSent.Add(request);
-                friendsSent.Add(UserManager.FindById(request.UserReceivedId));
+                var user = UserManager.FindById(request.UserReceivedId);
+                if (user != null)
+                {
+                    requestsSent.Add(request);
+                    friendsSent.Add(user);
+                }
             }
 
             var friendRequestsReceived = DbManager.FriendRequests
@@ -90,8 +95,12 @@ namespace DatingSite.Controllers
 
             foreach (var request in friendRequestsReceived)
             {
-                requestsReceived.Add(request);
-                friendsReceived.Add(UserManager.FindById(request.UserSentId));
+                var user = UserManager.FindById(request.UserSentId);
+                if (user != null)
+                {
+                    requestsReceived.Add(request);
+                    friendsReceived.Add(user);
+                }
             }
 
             model.friendRequestsSent = requestsSent;
@@ -131,6 +140,8 @@ namespace DatingSite.Controllers
             if (user == null)
                 user = UserManager.FindById(User.Identity.GetUserId());
             ProfileViewModel model = new ProfileViewModel();
+            bool isFriends;
+            var currUser = UserManager.FindById(User.Identity.GetUserId());
             model.Description = user.Description;
             model.City = user.City;
             model.FirstName = user.FirstName;
@@ -138,6 +149,17 @@ namespace DatingSite.Controllers
             model.BirthDate = user.BirthDate;
             model.Gender = model.Gender;
             model.Profile = user.Profile;
+            model.Id = user.Id;
+
+            bool existAsFriend = DbManager.Friends.Any(f => (f.User1Id == user.Id && f.User2Id == currUser.Id)
+                        || (f.User2Id == user.Id && f.User1Id == currUser.Id));
+            bool existAsRequest = DbManager.FriendRequests.Any(f => (f.UserSentId == user.Id && f.UserReceivedId == currUser.Id)
+                || (f.UserReceivedId == user.Id && f.UserSentId == currUser.Id));
+            bool isCurrUserProfile = (user.Id == currUser.Id);
+
+            isFriends = (existAsFriend || existAsRequest || isCurrUserProfile);
+
+            model.isFriend = isFriends;
 
             var file = Directory.GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UploadedFiles")).Where(f => f.Contains(user.Id));
             if (file.Count() != 0)
@@ -151,7 +173,49 @@ namespace DatingSite.Controllers
                 model.PicturePath = "default_profile.jpg";
             }
 
+            //Add all Posts
+            List<Posts> _posts = new List<Posts>();
+            List<ApplicationUser> _usersPosted = new List<ApplicationUser>();
+            var posts = DbManager.Posts.Where(p => p.UserProfileId == user.Id);
+            foreach (var post in posts)
+            {
+                var userPosted = UserManager.FindById(post.UserPostedId);
+                _posts.Add(post);
+                _usersPosted.Add(userPosted);
+            }
+            model.Posts = _posts;
+            model.UsersPosted = _usersPosted;
+
             return View(model);
+        }
+
+        public ActionResult AddFriend(string id)
+        {
+            var friendRequest = new FriendRequests();
+            friendRequest.UserReceivedId = id;
+            friendRequest.UserSentId = User.Identity.GetUserId();
+
+            DbManager.FriendRequests.Add(friendRequest);
+            DbManager.SaveChanges();
+
+            return RedirectToAction("Personal", "Account");
+        }
+
+        //
+        // POST: /Account/Register
+        [HttpPost]
+        public ActionResult AddComment(ProfileViewModel model, string profileId)
+        {
+            if (ModelState.IsValid)
+            {
+                var comment = new Posts();
+                comment.UserProfileId = profileId;
+                comment.UserPostedId = User.Identity.GetUserId();
+                comment.Comment = model.Comment;
+                DbManager.Posts.Add(comment);
+                DbManager.SaveChanges();
+            }
+            return RedirectToAction("Personal", "Account", new { id = profileId });
         }
 
         //
