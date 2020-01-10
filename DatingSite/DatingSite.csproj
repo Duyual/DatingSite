@@ -188,6 +188,54 @@
     <Compile Include="Migrations\202001060950151_addFirstAndLastname.Designer.cs">
       <DependentUpon>202001060950151_addFirstAndLastname.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202001092055594_changes.cs" />
+    <Compile Include="Migrations\202001092055594_changes.Designer.cs">
+      <DependentUpon>202001092055594_changes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001092105564_changetable.cs" />
+    <Compile Include="Migrations\202001092105564_changetable.Designer.cs">
+      <DependentUpon>202001092105564_changetable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001092109280_trori.cs" />
+    <Compile Include="Migrations\202001092109280_trori.Designer.cs">
+      <DependentUpon>202001092109280_trori.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001092120212_maybenow.cs" />
+    <Compile Include="Migrations\202001092120212_maybenow.Designer.cs">
+      <DependentUpon>202001092120212_maybenow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001092131542_trori1.cs" />
+    <Compile Include="Migrations\202001092131542_trori1.Designer.cs">
+      <DependentUpon>202001092131542_trori1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001092134372_remove.cs" />
+    <Compile Include="Migrations\202001092134372_remove.Designer.cs">
+      <DependentUpon>202001092134372_remove.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001092135351_oknowpls.cs" />
+    <Compile Include="Migrations\202001092135351_oknowpls.Designer.cs">
+      <DependentUpon>202001092135351_oknowpls.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001092146064_nowok.cs" />
+    <Compile Include="Migrations\202001092146064_nowok.Designer.cs">
+      <DependentUpon>202001092146064_nowok.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001092148514_jaaaa.cs" />
+    <Compile Include="Migrations\202001092148514_jaaaa.Designer.cs">
+      <DependentUpon>202001092148514_jaaaa.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001092152314_ajtnudoboni.cs" />
+    <Compile Include="Migrations\202001092152314_ajtnudoboni.Designer.cs">
+      <DependentUpon>202001092152314_ajtnudoboni.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001092154115_nuja.cs" />
+    <Compile Include="Migrations\202001092154115_nuja.Designer.cs">
+      <DependentUpon>202001092154115_nuja.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202001092159383_vatro.cs" />
+    <Compile Include="Migrations\202001092159383_vatro.Designer.cs">
+      <DependentUpon>202001092159383_vatro.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\FileUploadModel.cs" />
@@ -358,6 +406,8 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Account\Edit.cshtml" />
+    <Content Include="Views\Account\FriendList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -377,6 +427,42 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202001060950151_addFirstAndLastname.resx">
       <DependentUpon>202001060950151_addFirstAndLastname.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001092055594_changes.resx">
+      <DependentUpon>202001092055594_changes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001092105564_changetable.resx">
+      <DependentUpon>202001092105564_changetable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001092109280_trori.resx">
+      <DependentUpon>202001092109280_trori.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001092120212_maybenow.resx">
+      <DependentUpon>202001092120212_maybenow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001092131542_trori1.resx">
+      <DependentUpon>202001092131542_trori1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001092134372_remove.resx">
+      <DependentUpon>202001092134372_remove.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001092135351_oknowpls.resx">
+      <DependentUpon>202001092135351_oknowpls.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001092146064_nowok.resx">
+      <DependentUpon>202001092146064_nowok.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001092148514_jaaaa.resx">
+      <DependentUpon>202001092148514_jaaaa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001092152314_ajtnudoboni.resx">
+      <DependentUpon>202001092152314_ajtnudoboni.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001092154115_nuja.resx">
+      <DependentUpon>202001092154115_nuja.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001092159383_vatro.resx">
+      <DependentUpon>202001092159383_vatro.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

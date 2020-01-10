@@ -63,6 +63,49 @@ namespace DatingSite.Models
         public bool RememberMe { get; set; }
     }
 
+    public class EditViewModel
+    {
+        public ApplicationUser user;
+
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Old Password")]
+        public string OldPassword { get; set; }
+
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "New Password")]
+        public string Password { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm password")]
+        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
+        [Display(Name = "Birth Date")]
+        public DateTime BirthDate { get; set; }
+        public string Description { get; set; }
+        [Required]
+        public string Gender { get; set; }
+        [Required]
+        public string City { get; set; }
+        public string Profile { get; set; }
+        [Required]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+    }
+
+    public class FriendListModel
+    {
+        public List<ApplicationUser> friends;
+        public List<FriendRequests> friendRequestsSent;
+        public List<FriendRequests> friendRequestsReceived;
+        public List<ApplicationUser> friendsSent;
+        public List<ApplicationUser> friendsReceived;
+    }
+
     public class RegisterViewModel
     {
         [Required]
@@ -105,6 +148,7 @@ namespace DatingSite.Models
         public string Gender { get; set; }
         public string City { get; set; }
         public string Profile { get; set; }
+        public string PicturePath { get; set; }
     }
 
     public class ResetPasswordViewModel

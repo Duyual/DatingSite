@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,6 +11,21 @@ namespace DatingSite.Controllers
 {
     public class FileUploadController : Controller
     {
+
+        private ApplicationUserManager _userManager;
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
         // GET: FileUpload
         public ActionResult Index()
         {
@@ -22,11 +39,11 @@ namespace DatingSite.Controllers
             {
                 try
                 {
-                    //Method 2 Get file details from HttpPostedFileBase class    
-
+                    //Method 2 Get file details from HttpPostedFileBase class
                     if (file != null)
                     {
-                        string path = Path.Combine(Server.MapPath("~/UploadedFiles"), Path.GetFileName(file.FileName));
+                        //string path = Path.Combine(Server.MapPath("~/UploadedFiles"), Path.GetFileName(file.FileName));
+                        string path = Path.Combine(Server.MapPath("~/UploadedFiles"), UserManager.FindById(User.Identity.GetUserId()).Id += Path.GetExtension(file.FileName));
                         file.SaveAs(path);
                     }
                     ViewBag.FileStatus = "File uploaded successfully.";

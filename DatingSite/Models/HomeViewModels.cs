@@ -8,5 +8,7 @@ namespace DatingSite.Models
     public class HomeViewModel
     {
         public List<ApplicationUser> users;
+        public List<string> filePath;
     }
+
 }

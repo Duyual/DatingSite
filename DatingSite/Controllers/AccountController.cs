@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using DatingSite.Models;
+using System.IO;
+using System.Collections.Generic;
 
 namespace DatingSite.Controllers
 {
@@ -17,6 +19,8 @@ namespace DatingSite.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+
+        public OwnContext DbManager { get; set; } = new OwnContext();
 
         public AccountController()
         {
@@ -38,6 +42,64 @@ namespace DatingSite.Controllers
             { 
                 _signInManager = value; 
             }
+        }
+
+        public ActionResult FriendList()
+        {
+            FriendListModel model = new FriendListModel();
+            List<ApplicationUser> friends = new List<ApplicationUser>();
+            List<FriendRequests> requestsSent = new List<FriendRequests>();
+            List<FriendRequests> requestsReceived = new List<FriendRequests>();
+            List<ApplicationUser> friendsSent = new List<ApplicationUser>();
+            List<ApplicationUser> friendsReceived = new List<ApplicationUser>();
+
+            var currUser = UserManager.FindById(User.Identity.GetUserId());
+            var firstFriends = DbManager.Friends
+                .Where(f => f.User1Id == currUser.Id)
+                .ToList();
+
+            foreach (var friend in firstFriends)
+            {
+                friends.Add(UserManager.FindById(friend.User2Id));
+            }
+
+            var secondFriends = DbManager.Friends
+                .Where(f => f.User2Id == currUser.Id)
+                .ToList();
+
+            foreach (var friend in secondFriends)
+            {
+                friends.Add(UserManager.FindById(friend.User1Id));
+            }
+
+            model.friends = friends;
+
+            var friendRequestsSent = DbManager.FriendRequests
+                .Where(r => r.UserSentId == currUser.Id)
+                .ToList();
+
+            foreach (var request in friendRequestsSent)
+            {
+                requestsSent.Add(request);
+                friendsSent.Add(UserManager.FindById(request.UserReceivedId));
+            }
+
+            var friendRequestsReceived = DbManager.FriendRequests
+                .Where(r => r.UserReceivedId == currUser.Id)
+                .ToList();
+
+            foreach (var request in friendRequestsReceived)
+            {
+                requestsReceived.Add(request);
+                friendsReceived.Add(UserManager.FindById(request.UserSentId));
+            }
+
+            model.friendRequestsSent = requestsSent;
+            model.friendRequestsReceived = requestsReceived;
+            model.friendsSent = friendsSent;
+            model.friendsReceived = friendsReceived;
+
+            return PartialView(model);
         }
 
         public ApplicationUserManager UserManager
@@ -74,8 +136,21 @@ namespace DatingSite.Controllers
             model.FirstName = user.FirstName;
             model.LastName = user.LastName;
             model.BirthDate = user.BirthDate;
-            model.Gender = user.Gender;
+            model.Gender = model.Gender;
             model.Profile = user.Profile;
+
+            var file = Directory.GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UploadedFiles")).Where(f => f.Contains(user.Id));
+            if (file.Count() != 0)
+            {
+                var filePath = file.First().Split('\\');
+                var fileName = filePath[filePath.Length - 1];
+                model.PicturePath = fileName;
+            }
+            else
+            {
+                model.PicturePath = "default_profile.jpg";
+            }
+
             return View(model);
         }
 
@@ -187,6 +262,44 @@ namespace DatingSite.Controllers
                 AddErrors(result);
             }
 
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        // GET: /Account/Register
+        [AllowAnonymous]
+        public ActionResult Edit()
+        {
+            EditViewModel model = new EditViewModel();
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            model.user = user;
+            return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(EditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var currUser = UserManager.FindById(User.Identity.GetUserId());
+                currUser.BirthDate = model.BirthDate;
+                currUser.Description = model.Description;
+                currUser.City = model.City;
+                currUser.Gender = model.Gender;
+                currUser.FirstName = model.FirstName;
+                currUser.LastName = model.LastName;
+                var result = await UserManager.UpdateAsync(currUser);
+                if (model.OldPassword != null && model.Password != null)
+                    await UserManager.ChangePasswordAsync(currUser.Id, model.OldPassword, model.Password);
+                model.user = currUser;
+                if (result.Succeeded)
+                {
+                    //
+                }
+                AddErrors(result);
+            }
             // If we got this far, something failed, redisplay form
             return View(model);
         }

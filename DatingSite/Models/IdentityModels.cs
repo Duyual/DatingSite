@@ -4,6 +4,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
+using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
+using System.ComponentModel.DataAnnotations;
+using System.Data.Entity.ModelConfiguration.Conventions;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DatingSite.Models
 {
@@ -20,7 +25,6 @@ namespace DatingSite.Models
         public string Profile { get; set; }
 
 
-
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -28,6 +32,69 @@ namespace DatingSite.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        //public ICollection<Posts> PostsMade { get; set; }
+        //public ICollection<Posts> PostsGotten { get; set; }
+        //public ICollection<Friends> Friend1 { get; set; }
+        //public ICollection<Friends> Friend2 { get; set; }
+        //public ICollection<FriendRequests> UserSentFriendRequest { get; set; }
+        //public ICollection<FriendRequests> UserReceivedFriendRequest { get; set; }
+    }
+
+    public class Posts
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
+        public int Id { get; set; }
+        public string UserPostedId { get; set; }
+        public string UserProfileId { get; set; }
+        public string Comment { get; set; }
+        //public virtual ApplicationUser UserPosted { get; set; }
+        //public virtual ApplicationUser UserProfile { get; set; }
+
+    }
+
+    public class Friends
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
+        public int Id { get; set; }
+        public string User1Id { get; set; }
+        public string User2Id { get; set; }
+        //public virtual ApplicationUser User1 { get; set; }
+        //public virtual ApplicationUser User2 { get; set; }
+    }
+
+    public class FriendRequests
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
+        public int Id { get; set; }
+        public string UserSentId { get; set; }
+        public string UserReceivedId { get; set; }
+        //public virtual ApplicationUser UserSent { get; set; }
+        //public virtual ApplicationUser UserReceived { get; set; }
+    }
+
+    public class OwnContext : DbContext
+    {
+        public OwnContext() : base("DbTables")
+        {
+            //this.Database.
+            //Database.SetInitializer<OwnContext>(null); // Remove default initializer
+            //Configuration.LazyLoadingEnabled = false;
+            //Configuration.ProxyCreationEnabled = false;
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            
+        }
+
+        public virtual DbSet<Friends> Friends { get; set; }
+        public virtual DbSet<FriendRequests> FriendRequests { get; set; }
+        public virtual DbSet<Posts> Posts { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -42,6 +109,13 @@ namespace DatingSite.Models
             return new ApplicationDbContext();
         }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Friends>();
+            modelBuilder.Entity<FriendRequests>();
+            modelBuilder.Entity<Posts>();
+        }
         //public System.Data.Entity.DbSet<DatingSite.Models.ApplicationUser> ApplicationUsers { get; set; }
     }
 }
